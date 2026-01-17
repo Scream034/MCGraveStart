@@ -1,34 +1,27 @@
-# 1. Сообщаем координаты в чат (на всякий случай)
-tellraw @s ["",{"text":"[Grave] ","color":"red"},{"text":"X: ","color":"yellow"},{"nbt":"Pos[0]","entity":"@s","interpret":false},{"text":" Y: ","color":"yellow"},{"nbt":"Pos[1]","entity":"@s","interpret":false},{"text":" Z: ","color":"yellow"},{"nbt":"Pos[2]","entity":"@s","interpret":false}]
+tag @s add gs_processing
 
-# 2. Спавним звезду
-summon item ~ ~ ~ {Tags:["grave_star"],Item:{id:"minecraft:nether_star",Count:1b},CustomName:'{"text":"Death Point","color":"yellow","bold":true}',CustomNameVisible:1b,Glowing:1b,NoGravity:1b,Invulnerable:1b,PickupDelay:32767,Age:-32768}
+# 1. СЧИТАЕМ ОПЫТ (ВЫСАСЫВАЕМ ВСЁ)
+scoreboard players set @s gs_math 0
+function grave_star:calc/drain_xp
 
-# 3. Копируем инвентарь
-data modify entity @e[type=item,tag=grave_star,sort=nearest,limit=1,distance=..1] Item.tag.SavedInv set from entity @s Inventory
+# 2. СОХРАНЯЕМ ИСХОДНОЕ ЗНАЧЕНИЕ (Для красоты в чате/голограмме)
+scoreboard players operation @s gs_info = @s gs_math
 
-# --- СОХРАНЕНИЕ ОПЫТА ---
-# Копируем общее кол-во очков опыта (XpTotal), чтобы вернуть всё с точностью
-data modify entity @e[type=item,tag=grave_star,sort=nearest,limit=1,distance=..1] Item.tag.StoredXpTotal set from entity @s XpTotal
-# Копируем просто уровень (XpLevel) для отображения в тексте голограммы
-data modify entity @e[type=item,tag=grave_star,sort=nearest,limit=1,distance=..1] Item.tag.StoredXpLevel set from entity @s XpLevel
+# 3. ПРИМЕНЯЕМ ШТРАФ (МАТЕМАТИКА)
+# Формула: (Опыт * Процент) / 100
+scoreboard players operation @s gs_math *= #xp_percent gs_config
+scoreboard players operation @s gs_math /= #const_100 gs_config
 
-# --- ГОЛОГРАММА (TEXT DISPLAY) ---
-# Спавним текст над звездой.
-# selector:@p выберет ближайшего игрока (вас, так как вы умерли здесь), это подставит ваше имя.
-# nbt:Item.tag.StoredXpLevel покажет уровень, сохраненный в звезде.
-summon text_display ~ ~1.3 ~ {Tags:["grave_text"],billboard:"vertical",text:'["",{"text":"† R.I.P. †","color":"dark_red","bold":true},{"text":"\\n"},{"selector":"@p","color":"gray"},{"text":"\\nXP Level: ","color":"green","bold":true},{"nbt":"Item.tag.StoredXpLevel","entity":"@e[type=item,tag=grave_star,limit=1,sort=nearest]"}]'}
+# Сообщение в чат с деталями
+tellraw @s ["",{"text":"[Grave] ","color":"red"},{"text":"XP was: ","color":"gray"},{"score":{"name":"@s","objective":"gs_info"},"color":"gray"},{"text":" -> Saved: ","color":"green"},{"score":{"name":"@s","objective":"gs_math"},"color":"green"},{"text":" pts.","color":"green"}]
 
-# Чтобы показать "Day", нам нужен скорборд. Если его нет, текст будет пустым, это не страшно. 
-# Можно добавить (execute store result score day_count dummy run time query day) перед спавном, если хотите.
+# 4. Спавн могилы
+scoreboard players operation #dead_id gs_id = @s gs_id
 
-# Задержка 3 секунды
-scoreboard players set @e[type=item,tag=grave_star,sort=nearest,limit=1,distance=..1] gs_timer 60
+execute as @e[type=marker,tag=gs_tracker] if score @s gs_id = #dead_id gs_id at @s run function grave_star:spawn_grave_logic
+execute as @e[type=marker,tag=gs_tracker] if score @s gs_id = #dead_id gs_id run kill @s
 
-# 4. Очищаем инвентарь и опыт
+# Чистка
 clear @s
-experience set @s 0 levels
-experience set @s 0 points
 scoreboard players set @s gs_death 0
-
-tellraw @s {"text":"Инвентарь и опыт сохранены в звезде.","color":"green"}
+tag @s remove gs_processing
