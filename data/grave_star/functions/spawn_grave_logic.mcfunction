@@ -11,7 +11,7 @@ execute if score #y_pos gs_math matches ..-96 run function grave_star:void/check
 
 # --- 2. СПАВН ОБЪЕКТОВ ---
 # Сообщаем координаты ТОЛЬКО умирающему (@a[tag=dying_victim])
-execute at @s run tellraw @a[tag=dying_victim] ["",{"text":"[Grave] ","color":"red"},{"text":"Ваша могила находится на ","color":"yellow"},{"nbt":"Pos[0]","entity":"@s","interpret":false},{"text":" ","color":"yellow"},{"nbt":"Pos[1]","entity":"@s","interpret":false},{"text":" ","color":"yellow"},{"nbt":"Pos[2]","entity":"@s","interpret":false}]
+execute at @s run tellraw @a[tag=dying_victim] ["",{"text":"[Могила] ","color":"red"},{"text":"Ваша могила находится на ","color":"yellow"},{"nbt":"Pos[0]","entity":"@s","interpret":false},{"text":" ","color":"yellow"},{"nbt":"Pos[1]","entity":"@s","interpret":false},{"text":" ","color":"yellow"},{"nbt":"Pos[2]","entity":"@s","interpret":false}]
 
 # Спавним Звезду (Предмет)
 execute at @s run summon item ~ ~ ~ {Tags:["grave_star"],Item:{id:"minecraft:nether_star",Count:1b},CustomName:'{"text":"Точка Смерти","color":"yellow","bold":true}',CustomNameVisible:1b,Glowing:1b,NoGravity:1b,Invulnerable:1b,PickupDelay:32767,Age:-32768}
