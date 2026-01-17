@@ -1,6 +1,8 @@
-# Спавним новый маркер прямо в игроке
-summon marker ~ ~ ~ {Tags:["gs_tracker"]}
+# Спавним маркер с временным тегом gs_new
+summon marker ~ ~ ~ {Tags:["gs_tracker","gs_new"]}
 
-# Присваиваем ID ближайшему новому маркеру (только что созданному)
-# Мы ищем маркер с тегом gs_tracker в радиусе 0.1 и копируем в него ID игрока
-scoreboard players operation @e[type=marker,tag=gs_tracker,distance=..0.5,limit=1,sort=nearest] gs_id = @s gs_id
+# Копируем ID от игрока (@s) в НОВЫЙ маркер
+scoreboard players operation @e[type=marker,tag=gs_new,limit=1] gs_id = @s gs_id
+
+# Удаляем временный тег
+tag @e[type=marker,tag=gs_new] remove gs_new
