@@ -1,7 +1,7 @@
-# Спавним маркер с временным тегом gs_new
+# Спавним маркер
 summon marker ~ ~ ~ {Tags:["gs_tracker","gs_new"]}
 
-# Копируем ID от игрока (@s) в НОВЫЙ маркер
+# Копируем ID
 scoreboard players operation @e[type=marker,tag=gs_new,limit=1] gs_id = @s gs_id
 
 # Удаляем временный тег

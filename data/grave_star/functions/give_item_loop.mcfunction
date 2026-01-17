@@ -1,8 +1,8 @@
-# 1. Если вещей больше нет
+# 1. Если вещей больше нет - удаляем звезду
 execute unless data storage grave_star:ram Items[0] as @e[type=item,tag=active_grave] run kill @s
 execute unless data storage grave_star:ram Items[0] run return 0
 
-# 2. Спавним предмет (визуальный эффект вылета)
+# 2. Спавним предмет (эффект вылета)
 execute as @e[type=item,tag=active_grave,limit=1] at @s run function grave_star:emit_item_logic
 
 # 3. Планируем следующий тик

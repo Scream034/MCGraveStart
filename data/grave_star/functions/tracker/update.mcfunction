@@ -1,2 +1,2 @@
-# Работаем только с живыми. Если игрок умер, маркер замирает на месте смерти.
+# Работаем только с живыми
 execute if entity @s[nbt={DeathTime:0s}] run function grave_star:tracker/move_logic

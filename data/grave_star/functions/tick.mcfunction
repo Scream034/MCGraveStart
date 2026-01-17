@@ -8,12 +8,11 @@ execute as @a[scores={gs_death=1..},tag=!gs_processing] run function grave_star:
 # 3. Таймеры
 scoreboard players remove @e[type=item,tag=grave_star,scores={gs_timer=1..}] gs_timer 1
 
-# 4. Вращение звезды (чисто визуал, старая логика star_tick больше не нужна для подбора)
+# 4. Вращение звезды (чисто визуал)
 execute as @e[type=item,tag=grave_star] at @s run tp @s ~ ~ ~ ~5 ~
 
-# 5. НОВОЕ: Проверка клика ПКМ по Interaction
-# Мы ищем сущности, у которых в NBT появился тег interaction (значит, кто-то кликнул)
+# 5. Проверка клика ПКМ по Interaction
 execute as @e[type=interaction,tag=grave_interact] if data entity @s interaction run function grave_star:interaction_handler
 
-# 6. Защита от случайного подбора (на всякий случай обновляем PickupDelay)
+# 6. Защита от случайного подбора
 execute as @e[type=item,tag=grave_star] run data modify entity @s PickupDelay set value 32767s

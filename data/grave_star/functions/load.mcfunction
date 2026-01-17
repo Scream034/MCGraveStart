@@ -12,4 +12,4 @@ scoreboard players set #const_100 gs_config 100
 gamerule keepInventory true
 gamerule commandBlockOutput false
 
-tellraw @a {"text":"[Grave Star] Multiplayer Fix Loaded.","color":"green"}
+tellraw @a {"text":"[Могила] Инициализация завершена (17.01.2026-e).","color":"green"}
