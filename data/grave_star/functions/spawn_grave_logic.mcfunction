@@ -20,7 +20,7 @@ execute at @s run scoreboard players set @e[type=item_display,tag=grave_star,sor
 # Спавним Голограмму
 # В selector ищем type=item_display
 # В nbt ищем item.tag.StoredPoints (с маленькой буквы item!)
-execute at @s run summon text_display ~ ~1.5 ~ {Tags:["grave_text"],billboard:"vertical",text:'["",{"text":"† R.I.P. †","color":"dark_red","bold":true},{"text":"\\nВладелец: ","color":"gray"},{"selector":"@a[tag=dying_victim,limit=1]","color":"white"},{"text":"\\nОпыт: ","color":"green"},{"nbt":"item.tag.StoredPoints","entity":"@e[type=item_display,tag=temp_target_star,limit=1,sort=nearest]","color":"green","bold":true},{"text":" pts\\n","color":"green"},{"text":"[ПКМ чтобы забрать]","color":"gold","bold":true}]'}
+execute at @s run summon text_display ~ ~1.5 ~ {Tags:["grave_text"],billboard:"vertical",text:'["",{"text":"† R.I.P. †","color":"dark_red","bold":true},{"text":"\\nВладелец: ","color":"gray"},{"selector":"@a[tag=dying_victim,limit=1]","color":"white"},{"text":"\\nОпыт: ","color":"green"},{"nbt":"item.tag.StoredPoints","entity":"@e[type=item_display,tag=temp_target_star,limit=1,sort=nearest]","color":"green","bold":true},{"text":" очков\\n","color":"green"},{"text":"[ПКМ чтобы забрать]","color":"gold","bold":true}]'}
 
 # Удаляем временный тег
 tag @e[tag=temp_target_star] remove temp_target_star
